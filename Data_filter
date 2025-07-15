@@ -1,0 +1,19 @@
+#Python Code
+#data_filter
+
+import pandas as pd
+
+file_path = r'D:\new_project\HumanResources(1).csv.xlsx'
+df = pd.read_excel(file_path)
+
+print(df.head())
+
+if 'Title' in df.columns:
+    titles_split = df['Title'].str.split(',', expand=True)
+    titles_split.columns = [f'Title_{i+1}' for i in range(titles_split.shape[1])]
+    df_separated = pd.concat([df.drop(columns=['Title']), titles_split], axis=1)
+    output_path = 'HumanResources_SeparatedTitles.csv'
+    df_separated.to_csv(output_path, index=False)
+    print(f'Titles separated and saved to {output_path}')
+else:
+    print('Title column not found in the DataFrame.')
